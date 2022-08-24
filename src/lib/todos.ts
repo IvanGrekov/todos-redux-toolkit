@@ -1,51 +1,57 @@
+import axios, { AxiosRequestConfig } from 'axios';
 import { BASE_URL } from './api';
 import { ITodo } from '../types';
 
-export const getTodos = (options?: RequestInit) => (
-  fetch(`${BASE_URL}/todos`, options).then((res) => res.json())
+export const getTodos = (options: AxiosRequestConfig<any> = {}) => (
+  axios({
+    ...options,
+    url: `${BASE_URL}/todos`,
+  })
+    .then((res) => res.data)
 );
 
 export const addTodo = (newTodoTitle: string) => {
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-    body: JSON.stringify({
-      id: Math.random() * Math.random(),
-      title: newTodoTitle,
-      completed: false,
-    }),
-  }
+  const newTodo = {
+    id: Math.random() * Math.random(),
+    title: newTodoTitle,
+    completed: false,
+  };
+
+  const headers = {
+    'Content-type': 'application/json; charset=UTF-8',
+  };
 
   return (
-    fetch(`${BASE_URL}/todos`, options)
-      .then((res) => res.json())
+    axios({
+      method: 'POST',
+      url: `${BASE_URL}/todos`,
+      headers,
+      data: newTodo,
+    })
+      .then(res => res.data)
   );
 };
 
 export const changeTodo = (changingTodo: ITodo) => {
-  const options = {
-    method: 'PATCH',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-    body: JSON.stringify(changingTodo),
-  }
+  const headers = {
+    'Content-type': 'application/json; charset=UTF-8',
+  };
 
   return (
-    fetch(`${BASE_URL}/todos/${changingTodo.id}`, options)
-      .then((res) => res.json())
+    axios({
+      method: 'PATCH',
+      url: `${BASE_URL}/todos/${changingTodo.id}`,
+      headers,
+      data: changingTodo,
+
+    })
+      .then(res => res.data)
   );
 };
 
-export const deleteTodo = (todoId: string) => {
-  const options = {
+export const deleteTodo = (todoId: string) => (
+  axios({
     method: 'DELETE',
-  }
-
-  return (
-    fetch(`${BASE_URL}/todos/${todoId}`, options)
-      .then((res) => res.json())
-  );
-};
+    url: `${BASE_URL}/todos/${todoId}`,
+  })
+);
