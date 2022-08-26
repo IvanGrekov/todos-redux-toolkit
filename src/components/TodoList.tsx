@@ -1,26 +1,19 @@
 import React from 'react';
-import TodoItem, { TodoItemProps } from './TodoItem';
-import { ITodo } from '../types';
+import { useSelector } from 'react-redux';
+import { getTodos as getTodosFromStore } from '../store';
+import TodoItem from './TodoItem';
 
-interface TodoListProps extends Omit<TodoItemProps, 'todo'> {
-  todos: ITodo[];
-}
+interface TodoListProps {}
 
-const TodoList: React.FC<TodoListProps> = ({
-  todos,
-  toggleTodoStatus,
-  deleteTodo,
-}) => {
+const TodoList: React.FC<TodoListProps> = ({}) => {
+  const todos = useSelector(getTodosFromStore);
+  
   return (
     <ul className="todo-list">
       {todos.length > 0 ? (
         todos.map((todo) => (
           <li key={todo.id}>
-            <TodoItem
-              todo={todo}
-              toggleTodoStatus={toggleTodoStatus}
-              deleteTodo={deleteTodo}
-            />
+            <TodoItem todo={todo} />
           </li>
         ))
       ) : (

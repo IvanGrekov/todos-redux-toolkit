@@ -1,16 +1,38 @@
-import { useState, useCallback, useMemo, ChangeEventHandler } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { actions as todosActions, ADD_TO_SERVER } from '../store/todos';
 
-interface AddTodoProps {
-  newTodoTitle: string;
-  setNewTodoTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent) => void;
-}
+interface AddTodoProps {}
 
-const AddTodo: React.FC<AddTodoProps> = ({
-  newTodoTitle,
-  setNewTodoTitle,
-  onSubmit,
-}) => {
+const AddTodo: React.FC<AddTodoProps> = ({}) => {
+  const dispatch = useDispatch();
+  const [newTodoTitle, setNewTodoTitle] = useState('');
+
+  const addTodo = useCallback(
+    async (newTodoTitle: string) =>
+      // @ts-ignore:next-line
+      await dispatch(todosActions[ADD_TO_SERVER](newTodoTitle)),
+    []
+  );
+
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setNewTodoTitle(e.target.value);
+    },
+    []
+  );
+
+  const onSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const result = await addTodo(newTodoTitle);
+      if (result) {
+        setNewTodoTitle('');
+      }
+    },
+    [newTodoTitle]
+  );
+
   const isSubmitButtonDisabled = useMemo(
     () => newTodoTitle.trim().length === 0,
     [newTodoTitle]
@@ -23,7 +45,7 @@ const AddTodo: React.FC<AddTodoProps> = ({
           id="new-todo-input"
           name="new-todo-title"
           value={newTodoTitle}
-          onChange={setNewTodoTitle}
+          onChange={onInputChange}
         />
       </label>
 

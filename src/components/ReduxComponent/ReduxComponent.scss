@@ -1,0 +1,147 @@
+.redux-component {
+  margin-bottom: 64px;
+  padding: 24px 24px;
+  color: black;
+  background-color: white;
+
+  &--dark {
+    color: white;
+    background-color: black;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 0 0 24px;
+    border-bottom: 1px solid black;
+
+    &--dark {
+      border-bottom-color: white;
+    }
+  }
+
+  &__title {
+    margin: 0;
+  }
+}
+
+.button {
+  min-width: 100px;
+  padding: 10px 20px;
+  font-size: 20px;
+  color: black;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 150ms;
+
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+
+  &--dark {
+    color: white;
+    border-color: white;
+
+    &:hover {
+      color: black;
+      background-color: white;
+    }
+  }
+
+  &--green {
+    color: white;
+    background-color: green;
+    border: none;
+
+    &:hover {
+      color: black;
+      background-color: rgb(200, 231, 139);
+    }
+
+    &.button--dark {
+      color: black;
+      background-color: rgb(200, 231, 139);
+
+      &:hover {
+        color: white;
+        background-color: green;
+      }
+    }
+  }
+
+  &--red {
+    color: white;
+    background-color: red;
+    border: none;
+
+    &:hover {
+      color: black;
+      background-color: rgb(245, 173, 173);
+    }
+
+    &.button--dark {
+      color: black;
+      background-color: rgb(245, 173, 173);
+
+      &:hover {
+        color: white;
+        background-color: red;
+      }
+    }
+  }
+
+  &--blue {
+    color: white;
+    background-color: blue;
+    border: none;
+
+    &:hover {
+      color: rgb(0, 0, 0);
+      background-color: rgb(176, 229, 245);
+    }
+
+    &.button--dark {
+      color: rgb(0, 0, 0);
+      background-color: rgb(176, 229, 245);
+
+      &:hover {
+        color: white;
+        background-color: blue;
+      }
+    }
+  }
+}
+
+.counter-wrapper {
+  padding: 24px 0;
+  border: 1px solid black;
+  border-radius: 24px;
+
+  &--dark {
+    border-color: white;
+  }
+
+  .counter-title {
+    margin: 0 0 24px;
+  }
+
+  .main-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .minor-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

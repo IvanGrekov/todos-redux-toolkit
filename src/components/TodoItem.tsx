@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  actions as todosActions,
+  CHANGE_ON_SERVER,
+  DELETE_ON_SERVER,
+} from '../store/todos';
 import { ITodo } from '../types';
 
 export interface TodoItemProps {
   todo: ITodo;
-  toggleTodoStatus: (id: string) => void;
-  deleteTodo: (id: string) => void;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({
-  todo,
-  toggleTodoStatus,
-  deleteTodo,
-}) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const toggleTodoStatus = useCallback(async () => {
+    const changingTodo: ITodo = {
+      ...todo,
+      completed: !todo.completed,
+    };
+
+    // @ts-ignore:next-line
+    await dispatch(todosActions[CHANGE_ON_SERVER](changingTodo));
+  }, [todo]);
+
+  const deleteTodo = useCallback(async () => {
+    // @ts-ignore:next-line
+    await dispatch(todosActions[DELETE_ON_SERVER](todo.id));
+  }, [todo]);
 
   return (
     <div className={`todo-item ${loading ? 'todo-item--loading' : ''}`}>
@@ -21,7 +37,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
         checked={todo.completed}
         onChange={async () => {
           setLoading(true);
-          await toggleTodoStatus(todo.id);
+          await toggleTodoStatus();
           setLoading(false);
         }}
       />
@@ -32,7 +48,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
         className="todo-remove-button"
         onClick={async () => {
           setLoading(true);
-          await deleteTodo(todo.id);
+          await deleteTodo();
           setLoading(false);
         }}
       >
