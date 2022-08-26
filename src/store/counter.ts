@@ -1,3 +1,4 @@
+import { put, takeEvery } from "@redux-saga/core/effects";
 import { CounterType } from "../types";
 
 export interface ICounterAction {
@@ -21,18 +22,29 @@ export const actions = {
   [ADD]: (value: CounterType): ICounterAction => ({ type: ADD, value }),
   [SUBTRACT]: (value: CounterType): ICounterAction => ({ type: SUBTRACT, value }),
   [CLEAR]: (): ICounterAction => ({ type: CLEAR }),
-  [ASYNC_INCREASE]: (delay: number = 0) => async(dispatch: Function) => {
-    try {
-      setTimeout(() => {
-        dispatch(actions[INCREASE]());
-
-        return 'success';
-      }, delay)
-    } catch(e) {
-      console.warn('Error was occured during async increasing counter', e);
-    }
-  }
+  [ASYNC_INCREASE]: (): ICounterAction => ({ type: ASYNC_INCREASE }),
 };
+//#endregion
+
+//#region WORKERS
+function delay(miliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('success');
+    }, miliseconds)
+  })
+}
+
+function* asyncIncreaseWorker() {
+  yield delay(1000);
+  yield put(actions[INCREASE]());
+}
+//#endregion
+
+//#region WATCHERS
+export function* counterWatcher() {
+  yield takeEvery(ASYNC_INCREASE, asyncIncreaseWorker);
+}
 //#endregion
 
 function counterReducer(

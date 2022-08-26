@@ -1,9 +1,10 @@
 import { createStore, combineReducers, applyMiddleware, } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import counterReducer from './counter';
+import createSagaMiddleware from '@redux-saga/core';
+import { all } from '@redux-saga/core/effects';
+import counterReducer, { counterWatcher } from './counter';
 import themeReducer from './theme';
-import todosReducer from './todos';
+import todosReducer, { todosWatcher } from './todos';
 import { CounterType, ThemeType, TodosType } from '../types';
 
 interface IState {
@@ -11,17 +12,23 @@ interface IState {
   theme: ThemeType;
   todos: TodosType;
 }
+const sagaMiddleware = createSagaMiddleware();
+function* rootWatcher() {
+  yield all([counterWatcher(), todosWatcher()])
+}
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   theme: themeReducer,
   todos: todosReducer,
 });
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)),
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
-store.subscribe(() => console.log(store.getState()));
+
+sagaMiddleware.run(rootWatcher);
 
 //#region SELECTORS
 export const getCounter = (state: IState) => state.counter;

@@ -28,8 +28,7 @@ const Counter: React.FC<CounterProps> = ({ theme }) => {
   );
 
   const asyncAction = useCallback(
-    // @ts-ignore:next-line
-    () => dispatch(counterActions[ASYNC_INCREASE](2000)),
+    () => dispatch(counterActions[ASYNC_INCREASE]()),
     []
   );
 
