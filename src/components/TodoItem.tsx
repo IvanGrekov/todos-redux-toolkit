@@ -1,10 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  actions as todosActions,
-  CHANGE_ON_SERVER,
-  DELETE_ON_SERVER,
-} from '../store/todos';
+import { changeTodo, removeTodo } from '../store/todosSlice';
 import { ITodo } from '../types';
 
 export interface TodoItemProps {
@@ -12,8 +8,8 @@ export interface TodoItemProps {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const toggleTodoStatus = useCallback(async () => {
     const changingTodo: ITodo = {
@@ -21,14 +17,12 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       completed: !todo.completed,
     };
 
-    // @ts-ignore:next-line
-    await dispatch(todosActions[CHANGE_ON_SERVER](changingTodo));
-  }, [todo]);
+    dispatch(changeTodo(changingTodo));
+  }, [dispatch, todo]);
 
   const deleteTodo = useCallback(async () => {
-    // @ts-ignore:next-line
-    await dispatch(todosActions[DELETE_ON_SERVER](todo.id));
-  }, [todo]);
+    dispatch(removeTodo(todo.id));
+  }, [dispatch, todo]);
 
   return (
     <div className={`todo-item ${loading ? 'todo-item--loading' : ''}`}>

@@ -4,6 +4,14 @@ export interface ITodo {
   completed: boolean;
 }
 
-export type ThemeType = 'light' | 'dark';
-export type CounterType = number;
-export type TodosType = ITodo[];
+export interface ThemeType {
+  value: 'light' | 'dark';
+};
+
+export interface CounterType {
+  value: number;
+};
+
+export interface TodosType {
+  todos: ITodo[]
+};

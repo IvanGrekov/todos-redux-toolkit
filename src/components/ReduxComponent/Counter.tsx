@@ -1,37 +1,32 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCounter } from '../../store';
-import {
-  actions as counterActions,
-  DECREASE,
-  INCREASE,
-  ASYNC_INCREASE,
-} from '../../store/counter';
+import { RootState } from '../../store';
+import { increase, decrease } from '../../store/counterSlice';
 import { ThemeType } from '../../types';
 
 interface CounterProps {
-  theme: ThemeType;
+  theme: ThemeType['value'];
 }
 
 const Counter: React.FC<CounterProps> = ({ theme }) => {
   const dispatch = useDispatch();
-  const counter = useSelector(getCounter);
+  const counter = useSelector((state: RootState) => state.counter.value);
 
   const increaseCounter = useCallback(
-    () => dispatch(counterActions[INCREASE]()),
-    []
+    () => dispatch(increase()),
+    [dispatch]
   );
 
   const decreaseCounter = useCallback(
-    () => dispatch(counterActions[DECREASE]()),
-    []
+    () => dispatch(decrease()),
+    [dispatch]
   );
 
-  const asyncAction = useCallback(
-    // @ts-ignore:next-line
-    () => dispatch(counterActions[ASYNC_INCREASE](2000)),
-    []
-  );
+  // const asyncAction = useCallback(
+  //   // @ts-ignore:next-line
+  //   () => dispatch(counterActions[ASYNC_INCREASE](2000)),
+  //   []
+  // );
 
   return (
     <article className={`counter-wrapper counter-wrapper--${theme}`}>
@@ -55,14 +50,14 @@ const Counter: React.FC<CounterProps> = ({ theme }) => {
         </button>
       </div>
 
-      <div className="minor-row">
+      {/* <div className="minor-row">
         <button
           onClick={asyncAction}
           className={`button button--blue button--${theme}`}
         >
           Async
         </button>
-      </div>
+      </div> */}
     </article>
   );
 };

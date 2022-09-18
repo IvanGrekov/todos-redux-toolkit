@@ -1,59 +1,59 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { actions as todosActions, ADD_TO_SERVER } from '../store/todos';
+import { addTodo as addTodoToStore } from '../store/todosSlice';
+import { ITodo } from '../types';
 
 interface AddTodoProps {}
 
-const AddTodo: React.FC<AddTodoProps> = ({}) => {
-  const dispatch = useDispatch();
-  const [newTodoTitle, setNewTodoTitle] = useState('');
+const AddTodo: React.FC<AddTodoProps> = () => {
+    const [newTodoTitle, setNewTodoTitle] = useState('');
+    const dispatch = useDispatch();
 
-  const addTodo = useCallback(
-    async (newTodoTitle: string) =>
-      // @ts-ignore:next-line
-      await dispatch(todosActions[ADD_TO_SERVER](newTodoTitle)),
-    []
-  );
+    const addTodo = useCallback(
+        (title: string): void => {
+          const newTodo: ITodo = {
+            id: (Math.random() * Math.random()).toString(),
+            title,
+            completed: false,
+          };
 
-  const onInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setNewTodoTitle(e.target.value);
-    },
-    []
-  );
+          dispatch(addTodoToStore([newTodo]))
+        },
+        [dispatch]
+    );
 
-  const onSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      const result = await addTodo(newTodoTitle);
-      if (result) {
-        setNewTodoTitle('');
-      }
-    },
-    [newTodoTitle]
-  );
+    const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewTodoTitle(e.target.value);
+    }, []);
 
-  const isSubmitButtonDisabled = useMemo(
-    () => newTodoTitle.trim().length === 0,
-    [newTodoTitle]
-  );
+    const onSubmit = useCallback(
+       (e: any) => {            
+            e.preventDefault();
 
-  return (
-    <form className="form" onSubmit={onSubmit} name="add-todo">
-      <label htmlFor="new-todo-input">
-        <input
-          id="new-todo-input"
-          name="new-todo-title"
-          value={newTodoTitle}
-          onChange={onInputChange}
-        />
-      </label>
+            addTodo(e.target?.['new-todo-title']?.value);
+            setNewTodoTitle('');
+        },
+        [addTodo],
+    );
 
-      <button type="submit" disabled={isSubmitButtonDisabled}>
-        Add todo
-      </button>
-    </form>
-  );
+    const isSubmitButtonDisabled = useMemo(() => newTodoTitle.trim().length === 0, [newTodoTitle]);
+
+    return (
+        <form className="form" onSubmit={onSubmit} name="add-todo">
+            <label htmlFor="new-todo-input">
+                <input
+                    id="new-todo-input"
+                    name="new-todo-title"
+                    value={newTodoTitle}
+                    onChange={onInputChange}
+                />
+            </label>
+
+            <button type="submit" disabled={isSubmitButtonDisabled}>
+                Add todo
+            </button>
+        </form>
+    );
 };
 
 export default AddTodo;

@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTheme } from '../../store';
-import { actions as themeActions, TOGGLE } from '../../store/theme';
 import Counter from './Counter';
+import { RootState } from '../../store';
+import { toggle } from '../../store/themeSlice';
 
 import './ReduxComponent.scss';
 
-const ReduxComponent = ({}) => {
+const ReduxComponent = () => {
+  const { value: theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
-  const theme = useSelector(getTheme);
 
-  const changeTheme = useCallback(() => dispatch(themeActions[TOGGLE]()), []);
+  const changeTheme = useCallback(() => dispatch(toggle()), [dispatch]);
 
   return (
     <section className={`redux-component redux-component--${theme}`}>

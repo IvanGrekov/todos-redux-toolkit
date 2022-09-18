@@ -76,18 +76,24 @@ export const actions = {
 //#endregion
 
 function todosReducer(
-  state: TodosType = [],
+  state: TodosType = { todos: [] },
   action: ICounterAction = { type: '' },
 ) {
   switch(action.type) {
     case DELETE:
-      return state.filter((todo) => todo.id !== action.todoId);
+      return {
+        todos: state.todos.filter((todo) => todo.id !== action.todoId),
+      };
 
     case ADD:
-      return [...state, ...action.newTodos || []];
+      return {
+        todos: [...state.todos, ...action.newTodos || []],
+      };
 
     case CHANGE:
-      return state.map((todo) => (todo.id === action.changingTodo?.id ? action.changingTodo || todo : todo));
+      return {
+        todos: state.todos.map((todo) => (todo.id === action.changingTodo?.id ? action.changingTodo : todo))
+      };
     
     default:
       return state;

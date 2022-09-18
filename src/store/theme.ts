@@ -1,7 +1,7 @@
-import { ThemeType } from "../types";
+import { ThemeType } from '../types';
 
 export interface IThemeAction {
-  type: string;
+    type: string;
 }
 
 //#region ACTION_TYPES
@@ -10,21 +10,25 @@ export const TOGGLE = 'theme/TOGGLE';
 
 //#region ACTION_CREATORS
 export const actions = {
-  [TOGGLE]: () => ({ type: TOGGLE }),
+    [TOGGLE]: () => ({ type: TOGGLE }),
 };
 //#endregion
 
 function themeReducer(
-  state: ThemeType | undefined = 'light',
-  action: IThemeAction = { type: '' },
+    state: ThemeType = {
+        value: 'light',
+    },
+    action: IThemeAction = { type: '' },
 ) {
-  switch (action.type) {
-    case TOGGLE:
-      return state === 'light' ? 'dark' : 'light';
+    switch (action.type) {
+        case TOGGLE:
+            return {
+                value: state.value === 'light' ? 'dark' : 'light',
+            };
 
-    default:
-      return state;
-  }
+        default:
+            return state;
+    }
 }
 
 export default themeReducer;
