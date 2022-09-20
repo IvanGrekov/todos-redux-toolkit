@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import TodoItem from './TodoItem';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
 interface TodoListProps {}
 

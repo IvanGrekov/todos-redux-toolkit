@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store';
-import { increase, decrease } from '../../store/counterSlice';
-import { ThemeType } from '../../types';
+import { RootState } from '../store';
+import { increase, decrease } from '../store/counterSlice';
+import { ThemeType } from '../types';
 
 interface CounterProps {
   theme: ThemeType['value'];

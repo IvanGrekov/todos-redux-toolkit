@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { changeTodo, removeTodo } from '../store/todosSlice';
-import { ITodo } from '../types';
+import { changeTodo, removeTodo } from '../../store/todosSlice';
+import { ITodo } from '../../types';
 
 export interface TodoItemProps {
   todo: ITodo;

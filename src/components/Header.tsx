@@ -1,23 +1,23 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Counter from './Counter';
-import { RootState } from '../../store';
-import { toggle } from '../../store/themeSlice';
+import { RootState } from '../store';
+import { toggle } from '../store/themeSlice';
 
-import './ReduxComponent.scss';
+import './Header.scss';
 
-const ReduxComponent = () => {
+const Header = () => {
   const { value: theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
 
   const changeTheme = useCallback(() => dispatch(toggle()), [dispatch]);
 
   return (
-    <section className={`redux-component redux-component--${theme}`}>
+    <section className={`header-section header-section--${theme}`}>
       <header
-        className={`redux-component__header redux-component__header--${theme}`}
+        className={`header-section__head header-section__head--${theme}`}
       >
-        <h2 className="redux-component__title">Redux</h2>
+        <h2 className="header-section__title">Redux</h2>
         <button onClick={changeTheme} className={`button button--${theme}`}>
           Change theme
         </button>
@@ -28,4 +28,4 @@ const ReduxComponent = () => {
   );
 };
 
-export default ReduxComponent;
+export default Header;

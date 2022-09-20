@@ -1,9 +1,9 @@
 // import { useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
 // import { actions as todosActions, LOAD } from './store/todos';
-import AddTodo from './components/AddTodo';
-import TodoList from './components/TodoList';
-import ReduxComponent from './components/ReduxComponent';
+import AddTodo from './components/Todos/AddTodo';
+import TodoList from './components/Todos/TodoList';
+import ReduxComponent from './components/Header';
 
 import './App.css';
 

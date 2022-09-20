@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTodo as addTodoToStore } from '../store/todosSlice';
-import { ITodo } from '../types';
+import { addTodo as addTodoToStore } from '../../store/todosSlice';
+import { ITodo } from '../../types';
 
 interface AddTodoProps {}
 
