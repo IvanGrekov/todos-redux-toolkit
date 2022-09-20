@@ -1,24 +1,14 @@
 {
   "todos": [
     {
-      "id": 3,
-      "title": "fugiat veniam minus",
-      "completed": false
-    },
-    {
-      "id": 0.2779572331094949,
-      "title": "todo 2",
+      "id": 0.2685838659512285,
+      "title": "Todo 1",
       "completed": true
     },
     {
-      "id": 0.335472892341287,
-      "title": "todo 1",
+      "id": 0.4611607744128645,
+      "title": "Todo 2",
       "completed": true
-    },
-    {
-      "id": 0.23434292574001128,
-      "title": "todo 3",
-      "completed": false
     }
   ]
 }

@@ -2,6 +2,7 @@ export interface ITodo {
   id: string;
   title: string;
   completed: boolean;
+  isLoading?: boolean;
 }
 
 export interface ThemeType {
@@ -13,5 +14,7 @@ export interface CounterType {
 };
 
 export interface TodosType {
-  todos: ITodo[]
+  todos: ITodo[];
+  loading: boolean;
+  error: any;
 };

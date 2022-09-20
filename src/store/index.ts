@@ -1,4 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+
 import todosReducer from './todosSlice';
 import counterReducer from './counterSlice';
 import themeReducer from './themeSlice';
@@ -14,6 +16,7 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type StoreDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
 
 export default store;

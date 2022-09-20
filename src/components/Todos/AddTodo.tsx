@@ -1,25 +1,18 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { addTodo as addTodoToStore } from '../../store/todosSlice';
-import { ITodo } from '../../types';
+import { useAppDispatch } from '../../store';
+import { addToServer } from '../../store/todosSlice';
 
 interface AddTodoProps {}
 
 const AddTodo: React.FC<AddTodoProps> = () => {
     const [newTodoTitle, setNewTodoTitle] = useState('');
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const addTodo = useCallback(
         (title: string): void => {
-          const newTodo: ITodo = {
-            id: (Math.random() * Math.random()).toString(),
-            title,
-            completed: false,
-          };
-
-          dispatch(addTodoToStore([newTodo]))
+            dispatch(addToServer(title));
         },
-        [dispatch]
+        [dispatch],
     );
 
     const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +20,7 @@ const AddTodo: React.FC<AddTodoProps> = () => {
     }, []);
 
     const onSubmit = useCallback(
-       (e: any) => {            
+        (e: any) => {
             e.preventDefault();
 
             addTodo(e.target?.['new-todo-title']?.value);

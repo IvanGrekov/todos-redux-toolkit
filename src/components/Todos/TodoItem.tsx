@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { changeTodo, removeTodo } from '../../store/todosSlice';
+import { useAppDispatch } from '../../store';
+import { changeOnServer, removeOnServer } from '../../store/todosSlice';
 import { ITodo } from '../../types';
 
 export interface TodoItemProps {
@@ -9,7 +9,7 @@ export interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const toggleTodoStatus = useCallback(async () => {
     const changingTodo: ITodo = {
@@ -17,11 +17,11 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       completed: !todo.completed,
     };
 
-    dispatch(changeTodo(changingTodo));
+    dispatch(changeOnServer(changingTodo));
   }, [dispatch, todo]);
 
   const deleteTodo = useCallback(async () => {
-    dispatch(removeTodo(todo.id));
+    dispatch(removeOnServer(todo.id));
   }, [dispatch, todo]);
 
   return (
