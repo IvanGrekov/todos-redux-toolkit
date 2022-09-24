@@ -9,13 +9,12 @@ import {
 } from '../lib/todos';
 import { ITodo, TodosType } from '../types';
 
-
 // TODO: pass data to pending
-
 
 const initialState: TodosType = {
     todos: [],
     loading: false,
+    addingTodo: false,
     error: null,
 };
 
@@ -36,8 +35,12 @@ export const addToServer = createAsyncThunk(
     'todos/addToServer',
     async (newTodoTitle: string, { dispatch, rejectWithValue }) => {
         try {
+            dispatch(setAddingTodoLoading());
             const todoFromServer: ITodo = await addTodoApiHelper(newTodoTitle);
             dispatch(addTodo([todoFromServer]));
+            dispatch(removeAddingTodoLoading());
+
+            return todoFromServer;
         } catch (e) {
             return rejectWithValue('Error was occured during adding todo');
         }
@@ -48,8 +51,10 @@ export const changeOnServer = createAsyncThunk(
     'todos/changeOnServer',
     async (changingTodo: ITodo, { dispatch, rejectWithValue }) => {
         try {
+            dispatch(setTodoLoading(changingTodo.id));
             const todoFromServer: ITodo = await changeTodoApiHelper(changingTodo);
             dispatch(changeTodo(todoFromServer));
+            dispatch(removeTodoLoading(changingTodo.id));
         } catch (e) {
             return rejectWithValue('Error was occured during changing todo');
         }
@@ -60,6 +65,7 @@ export const removeOnServer = createAsyncThunk(
     'todos/removeOnServer',
     async (todoId: string, { dispatch, rejectWithValue }) => {
         try {
+            dispatch(setTodoLoading(todoId));
             await deleteTodoApiHelper(todoId);
             dispatch(removeTodo(todoId));
         } catch (e) {
@@ -83,6 +89,30 @@ const reducers = {
 
     removeTodo(state: TodosType, action: PayloadAction<ITodo['id']>) {
         state.todos = state.todos.filter((todo: ITodo) => todo.id !== action.payload);
+    },
+
+    setTodoLoading(state: TodosType, action: PayloadAction<ITodo['id']>) {
+        state.todos.forEach((todo: ITodo) => {
+            if (todo.id === action.payload) {
+                todo.isLoading = true;
+            }
+        });
+    },
+
+    removeTodoLoading(state: TodosType, action: PayloadAction<ITodo['id']>) {
+        state.todos.forEach((todo: ITodo) => {
+            if (todo.id === action.payload) {
+                todo.isLoading = false;
+            }
+        });
+    },
+
+    setAddingTodoLoading(state: TodosType) {
+        state.addingTodo = true;
+    },
+
+    removeAddingTodoLoading(state: TodosType) {
+        state.addingTodo = false;
     },
 };
 
@@ -124,6 +154,14 @@ const todoSlice = createSlice({
     },
 });
 
-export const { addTodo, changeTodo, removeTodo } = todoSlice.actions;
+export const {
+    addTodo,
+    changeTodo,
+    removeTodo,
+    setTodoLoading,
+    removeTodoLoading,
+    setAddingTodoLoading,
+    removeAddingTodoLoading,
+} = todoSlice.actions;
 
 export default todoSlice.reducer;

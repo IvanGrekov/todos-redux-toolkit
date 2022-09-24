@@ -10,9 +10,11 @@ import ReduxComponent from './components/Header';
 import './App.css';
 
 function App() {
-    const { loading: todosLoading, error: todosError } = useSelector(
-        (state: RootState) => state.todos,
-    );
+    const {
+        loading: todosLoading,
+        error: todosError,
+        addingTodo,
+    } = useSelector((state: RootState) => state.todos);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -34,9 +36,14 @@ function App() {
 
             {todosLoading && <h2>Loading...</h2>}
 
-            {!todosError && <AddTodo />}
+            {addingTodo && <h2>Todo is adding...</h2>}
 
-            {!todosError && !todosLoading && <TodoList />}
+            {!todosError && !todosLoading && (
+                <>
+                    <AddTodo />
+                    <TodoList />
+                </>
+            )}
         </div>
     );
 }

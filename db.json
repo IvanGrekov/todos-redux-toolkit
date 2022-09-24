@@ -3,7 +3,8 @@
     {
       "id": 0.2685838659512285,
       "title": "Todo 1",
-      "completed": true
+      "completed": true,
+      "isLoading": false
     },
     {
       "id": 0.4611607744128645,

@@ -8,25 +8,21 @@ const AddTodo: React.FC<AddTodoProps> = () => {
     const [newTodoTitle, setNewTodoTitle] = useState('');
     const dispatch = useAppDispatch();
 
-    const addTodo = useCallback(
-        (title: string): void => {
-            dispatch(addToServer(title));
-        },
-        [dispatch],
-    );
-
     const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setNewTodoTitle(e.target.value);
     }, []);
 
     const onSubmit = useCallback(
-        (e: any) => {
+        async (e: any) => {
             e.preventDefault();
 
-            addTodo(e.target?.['new-todo-title']?.value);
-            setNewTodoTitle('');
+            const todo = await dispatch(addToServer(e.target?.['new-todo-title']?.value));
+
+            if (todo) {
+                setNewTodoTitle('');
+            }
         },
-        [addTodo],
+        [dispatch],
     );
 
     const isSubmitButtonDisabled = useMemo(() => newTodoTitle.trim().length === 0, [newTodoTitle]);
